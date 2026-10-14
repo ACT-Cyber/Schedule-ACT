@@ -82,7 +82,7 @@ const CONFIG = {
     LOADING: "Fetching",
     DEPART: "Depart",
     ARRIVAL: "Arrival",
-    ETA: "ETA",
+    ETA: "T/T",
     VGM_BEFORE: "VGM cut-off",
     VGM_HOURS: "hours before",
     CFS_AFTER: "CFS cut-off",
@@ -200,7 +200,7 @@ const CONFIG = {
       { key: "voyage", label: "VOYAGE" },
       { key: "cfsCutOff", label: "CFS cut-off" },
       { key: "etd", label: "Depart" },
-      { key: "duration", label: "ETA" },
+      { key: "duration", label: "T/T" },
       { key: "eta", label: "Arrival" },
     ],
     ID_PLACES: [
