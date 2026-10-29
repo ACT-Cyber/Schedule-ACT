@@ -170,7 +170,7 @@
 
     $("cards").innerHTML = data.length
       ? data
-          .map((item) => {
+          .map((item, i) => {
             const spec =
               CONFIG.CARD_LAYOUT[AppState.groupBy] || CONFIG.CARD_LAYOUT.origin;
             return `<article class="card">
@@ -253,6 +253,14 @@
     });
     $("searchInput").addEventListener("input", (e) => {
       AppState.searchQuery = e.target.value.trim().toLowerCase();
+      $("clearSearchBtn").hidden = !e.target.value;
+      renderUI();
+    });
+    $("clearSearchBtn").addEventListener("click", () => {
+      $("searchInput").value = "";
+      $("clearSearchBtn").hidden = true;
+      AppState.searchQuery = "";
+      $("searchInput").focus();
       renderUI();
     });
     $("sortDurationBtn").addEventListener("click", () => {
@@ -269,6 +277,7 @@
     });
     $("resetBtn").addEventListener("click", () => {
       $("searchInput").value = "";
+      $("clearSearchBtn").hidden = true;
       AppState.searchQuery = "";
       AppState.selectedCategory = CONFIG.DEFAULTS.CATEGORY_FILTER;
       AppState.sortDurationOrder = CONFIG.DEFAULTS.SORT_DURATION;

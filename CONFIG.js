@@ -246,4 +246,33 @@ const CONFIG = {
     MAIL: "mailto:",
     PLATFORMS: [{ key: "wa", icon: "img/wa.webp" }],
   },
+
+  CARDPRINT: {
+    HOLD_MS: 1000,
+    MOVE_PX: 8,
+    DEFAULT_KIND: "jpeg",
+    KINDS: [
+      ["jpeg", "JPEG"],
+      ["png", "PNG"],
+    ],
+    RASTER: "https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js",
+    ADDRESS: ["Jl. Perak Timur No. 248", "Tanjung Perak, Surabaya 60165"],
+    SITE: "https://actglobal-freight.com",
+    TITLE: "IMPORT",
+    PREV: "Previous design",
+    NEXT: "Next design",
+    DICE: "Random design",
+    BG: "Background",
+    RESET_BG: "Reset background",
+    PRINT: "Print",
+    CLOSE: "Close",
+    DESIGNS: [
+      {
+        id: "import-a",
+        label: "Import",
+        html: "cardprint/import-a/design.html",
+        css: "cardprint/import-a/design.css",
+      },
+    ],
+  },
 };
