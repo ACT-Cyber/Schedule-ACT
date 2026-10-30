@@ -207,6 +207,9 @@
   }
 
   function init() {
+    if (CONFIG.UI && CONFIG.UI.DISABLE_TEXT_SELECTION) {
+      document.documentElement.classList.add("no-select");
+    }
     $("appTitle").textContent = CONFIG.LABELS.APP_TITLE;
     Object.entries(CONFIG.MONTH_LABELS).forEach(([v]) =>
       $("monthPicker").add(

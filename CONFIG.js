@@ -153,6 +153,10 @@ const CONFIG = {
 
   THEME: { storageKey: "schedule-act-theme", default: "light" },
 
+  UI: {
+    DISABLE_TEXT_SELECTION: true,
+  },
+
   BULK: {
     HEADER: "img/bulk-header.webp",
     CSS: "bulk.css",

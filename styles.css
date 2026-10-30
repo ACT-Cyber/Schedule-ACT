@@ -88,6 +88,19 @@ button {
   cursor: pointer;
 }
 
+html.no-select,
+html.no-select * {
+  -webkit-user-select: none;
+  user-select: none;
+}
+html.no-select input,
+html.no-select textarea,
+html.no-select select,
+html.no-select [contenteditable="true"] {
+  -webkit-user-select: text;
+  user-select: text;
+}
+
 .wrap {
   width: min(1120px, calc(100% - 28px));
   margin-inline: auto;
