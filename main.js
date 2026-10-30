@@ -173,9 +173,9 @@
           .map((item, i) => {
             const spec =
               CONFIG.CARD_LAYOUT[AppState.groupBy] || CONFIG.CARD_LAYOUT.origin;
-            return `<article class="card">
+            return `<article class="card" data-i="${i}">
                 <div class="route-top">
-                    <div><h2>${esc(item[AppState.groupBy])}</h2><div class="stem">${pin}<span>${esc(item[spec.stem])}</span></div></div>
+                    <div title="${esc(CONFIG.CARDPRINT.OPEN)}"><h2>${esc(item[AppState.groupBy])}</h2><div class="stem">${pin}<span>${esc(item[spec.stem])}</span></div></div>
                     ${spec.cols.map(([lbl, k]) => `<div><span class="k">${esc(lbl)}</span><span class="v">${esc(item[k])}</span></div>`).join("")}
                 </div>
                 <div class="route-line">

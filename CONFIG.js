@@ -252,23 +252,16 @@ const CONFIG = {
   },
 
   CARDPRINT: {
-    HOLD_MS: 1000,
-    MOVE_PX: 8,
-    DEFAULT_KIND: "jpeg",
-    KINDS: [
-      ["jpeg", "JPEG"],
-      ["png", "PNG"],
-    ],
-    RASTER: "https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js",
     ADDRESS: ["Jl. Perak Timur No. 248", "Tanjung Perak, Surabaya 60165"],
     SITE: "https://actglobal-freight.com",
     TITLE: "IMPORT",
+    BG: "bg.webp",
     PREV: "Previous design",
     NEXT: "Next design",
     DICE: "Random design",
-    BG: "Background",
+    BG_LABEL: "Background",
     RESET_BG: "Reset background",
-    PRINT: "Print",
+    OPEN: "Print card",
     CLOSE: "Close",
     DESIGNS: [
       {

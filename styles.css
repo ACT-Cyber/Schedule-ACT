@@ -362,6 +362,9 @@ main {
   grid-template-columns: 1.1fr 1fr 1fr;
   gap: 8px;
 }
+.route-top > div:first-child {
+  cursor: pointer;
+}
 .card h2 {
   margin: 0;
   font-size: 1.2rem;

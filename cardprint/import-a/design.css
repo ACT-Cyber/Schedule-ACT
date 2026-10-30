@@ -1,6 +1,6 @@
 .cp-import {
-  width: 360px;
-  min-height: 520px;
+  width: min(100%, 210mm);
+  min-height: 297mm;
   display: flex;
   flex-direction: column;
   color: #10233f;
@@ -9,12 +9,12 @@
 }
 .cp-import .plate {
   flex: 1;
-  margin: 16px;
-  padding: 18px 16px 22px;
+  margin: 12px;
+  padding: 16px 14px 20px;
   border-radius: 28px;
   background:
-    linear-gradient(180deg, rgba(214, 232, 245, 0.92), rgba(184, 214, 232, 0.88)),
-    var(--cp-bg, none) center/cover no-repeat;
+    linear-gradient(180deg, rgba(214, 232, 245, 0.55), rgba(184, 214, 232, 0.45)),
+    var(--cp-bg) center/cover no-repeat;
   text-align: center;
 }
 .cp-import header {
@@ -25,8 +25,8 @@
 }
 .cp-import header img { width: 36px; height: 36px; object-fit: contain; }
 .cp-import h1 {
-  margin: 18px 0 8px;
-  font-size: 42px;
+  margin: 16px 0 8px;
+  font-size: clamp(28px, 8vw, 42px);
   letter-spacing: 0.08em;
 }
 .cp-import .banner {
@@ -42,8 +42,8 @@
 .cp-import .dates {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  gap: 10px;
-  margin-top: 22px;
+  gap: 8px;
+  margin-top: 18px;
 }
 .cp-import .dates div {
   display: grid;
@@ -52,8 +52,8 @@
 }
 .cp-import .dates span { font-size: 12px; font-weight: 800; letter-spacing: 0.06em; }
 .cp-import .dates b {
-  min-width: 72px;
-  min-height: 42px;
+  min-width: 64px;
+  min-height: 40px;
   display: grid;
   place-items: center;
   padding: 6px;
@@ -66,7 +66,7 @@
   align-items: center;
   justify-content: space-between;
   gap: 8px;
-  margin-top: 22px;
+  margin-top: 18px;
   padding: 12px;
   border-radius: 16px;
   background: rgba(255, 255, 255, 0.72);
@@ -79,9 +79,12 @@
 .cp-import footer {
   display: grid;
   gap: 2px;
-  padding: 0 20px 16px;
+  padding: 0 16px 14px;
   color: #b91c1c;
   font-size: 13px;
   font-weight: 700;
   text-align: center;
+}
+@media (min-width: 720px) {
+  .cp-import .plate { margin: 16px; padding: 22px 18px 26px; }
 }
