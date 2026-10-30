@@ -1,90 +1,139 @@
 .cp-import {
-  width: min(100%, 210mm);
-  min-height: 297mm;
-  display: flex;
-  flex-direction: column;
-  color: #10233f;
+  /* Tokens: change the look here only */
+  --cp-navy: #0b2a6f;
+  --cp-ink: #10233f;
+  --cp-yellow: #f5c518;
+  --cp-paper: #eaf3fa;
+  --cp-pad-x: 48px;
+  --cp-pad-top: 36px;
+  --cp-pad-bottom: 24px;
+  --cp-gap: 28px;
+  --cp-icon: 84px;
+  --cp-label-w: 190px;
+  --cp-title-size: 44px;
+  --cp-place-size: 84px;
+  --cp-to-size: 36px;
+  --cp-label-size: 24px;
+  --cp-value-size: 26px;
+  --cp-foot-size: 13px;
+
+  width: 210mm;
+  height: 297mm;
+  overflow: hidden;
+  color: var(--cp-ink);
   font-family: Inter, system-ui, sans-serif;
-  background: #d7e7f2;
+  background: var(--cp-paper);
 }
 .cp-import .plate {
-  flex: 1;
-  margin: 12px;
-  padding: 16px 14px 20px;
-  border-radius: 28px;
-  background:
-    linear-gradient(180deg, rgba(214, 232, 245, 0.55), rgba(184, 214, 232, 0.45)),
-    var(--cp-bg) center/cover no-repeat;
-  text-align: center;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  padding: var(--cp-pad-top) var(--cp-pad-x) var(--cp-pad-bottom);
+  text-align: left;
+  background: var(--cp-bg) center/cover no-repeat, var(--cp-paper);
 }
+
+/* Logo, top right */
 .cp-import header {
   display: flex;
   justify-content: flex-end;
   align-items: center;
-  gap: 8px;
-}
-.cp-import header img { width: 36px; height: 36px; object-fit: contain; }
-.cp-import h1 {
-  margin: 16px 0 8px;
-  font-size: clamp(28px, 8vw, 42px);
-  letter-spacing: 0.08em;
-}
-.cp-import .banner {
-  display: inline-flex;
   gap: 10px;
+  font-size: 20px;
+  color: var(--cp-navy);
+}
+.cp-import header img { width: 48px; height: 48px; object-fit: contain; }
+
+/* Title, top left, with accent bar */
+.cp-import h1 {
   margin: 0;
-  padding: 6px 16px;
-  border-radius: 999px;
-  background: #1d4e89;
-  color: #fff;
-  font-weight: 700;
+  padding-bottom: 10px;
+  width: fit-content;
+  font-size: var(--cp-title-size);
+  font-weight: 800;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+  color: var(--cp-ink);
+  border-bottom: 5px solid var(--cp-yellow);
 }
-.cp-import .dates {
+
+/* Origin and destination, prominent */
+.cp-import .route {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 8px;
-  margin-top: 18px;
+  margin: var(--cp-gap) 0;
 }
-.cp-import .dates div {
+.cp-import .place {
+  font-size: var(--cp-place-size);
+  font-weight: 800;
+  line-height: 1;
+  text-transform: uppercase;
+  color: var(--cp-navy);
+  overflow-wrap: anywhere;
+}
+.cp-import .to {
+  margin: 12px 0;
+  font-size: var(--cp-to-size);
+  font-weight: 800;
+  color: var(--cp-ink);
+}
+
+/* Detail rows */
+.cp-import .info {
   display: grid;
-  gap: 6px;
-  justify-items: center;
+  gap: var(--cp-gap);
+  margin: 0;
+  padding: 0;
+  list-style: none;
 }
-.cp-import .dates span { font-size: 12px; font-weight: 800; letter-spacing: 0.06em; }
-.cp-import .dates b {
-  min-width: 64px;
-  min-height: 40px;
+.cp-import .info li {
+  display: grid;
+  grid-template-columns: var(--cp-icon) var(--cp-label-w) 1fr;
+  align-items: center;
+}
+.cp-import .icon {
+  width: var(--cp-icon);
+  height: var(--cp-icon);
   display: grid;
   place-items: center;
-  padding: 6px;
-  border: 3px solid #e11d48;
-  border-radius: 12px;
-  background: #fff;
+  border-radius: 50%;
+  background: var(--cp-yellow);
+  color: var(--cp-navy);
 }
-.cp-import .route {
+.cp-import .icon svg {
+  width: 52%;
+  height: 52%;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.8;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+.cp-import .label {
+  padding-left: 28px;
+  font-size: var(--cp-label-size);
+  font-weight: 800;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+}
+.cp-import .value {
   display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 8px;
-  margin-top: 18px;
-  padding: 12px;
-  border-radius: 16px;
-  background: rgba(255, 255, 255, 0.72);
+  gap: 10px;
+  font-size: var(--cp-value-size);
   font-weight: 700;
 }
-.cp-import .route i {
-  flex: 1;
-  border-top: 2px dashed #334155;
+.cp-import .value::before {
+  content: ":";
+  margin-right: 14px;
+  font-weight: 800;
 }
+
+/* Contact line, bottom */
 .cp-import footer {
   display: grid;
   gap: 2px;
-  padding: 0 16px 14px;
-  color: #b91c1c;
-  font-size: 13px;
+  margin-top: auto;
+  color: var(--cp-navy);
+  font-size: var(--cp-foot-size);
   font-weight: 700;
   text-align: center;
-}
-@media (min-width: 720px) {
-  .cp-import .plate { margin: 16px; padding: 22px 18px 26px; }
 }
