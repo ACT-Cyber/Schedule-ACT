@@ -144,7 +144,60 @@
 html,body{margin:0;width:210mm;height:297mm;overflow:hidden}
 ${css}</style><body>${html}${run}`;
 
-  // Crop "cover" ourselves so html2canvas never stretches the background
+  const loadImage = (url) => new Promise((res, rej) => {
+    const img = new Image();
+    img.crossOrigin = "anonymous";
+    img.onload = () => res(img);
+    img.onerror = rej;
+    img.src = url;
+  });
+
+  const bakeEffects = async (doc) => {
+    const view = doc.defaultView;
+    const nodes = [...doc.querySelectorAll("*")].filter((el) => {
+      const cs = view.getComputedStyle(el);
+      const f = cs.backdropFilter || cs.webkitBackdropFilter;
+      return f && f !== "none";
+    });
+    for (const el of nodes) {
+      const cs = view.getComputedStyle(el);
+      const blur = parseFloat((cs.backdropFilter || cs.webkitBackdropFilter).match(/blur\(([\d.]+)px\)/)?.[1] || "8");
+      const plate = el.closest("[data-plate]") || el;
+      const raw = plate.style.getPropertyValue("--cp-bg") || view.getComputedStyle(plate).backgroundImage;
+      const url = (String(raw).match(/url\(["']?([^"')]+)/) || [])[1];
+      el.style.webkitBackdropFilter = "none";
+      el.style.backdropFilter = "none";
+      if (!url) continue;
+      const img = await loadImage(url).catch(() => null);
+      if (!img) continue;
+      const pr = plate.getBoundingClientRect();
+      const r = el.getBoundingClientRect();
+      const canvas = document.createElement("canvas");
+      canvas.width = Math.max(1, Math.round(r.width));
+      canvas.height = Math.max(1, Math.round(r.height));
+      const ctx = canvas.getContext("2d");
+      const s = Math.max(pr.width / img.width, pr.height / img.height);
+      const dw = img.width * s;
+      const dh = img.height * s;
+      const ox = pr.left + (pr.width - dw) / 2;
+      const oy = pr.top + (pr.height - dh) / 2;
+      ctx.filter = `blur(${blur}px)`;
+      ctx.drawImage(
+        img,
+        (r.left - ox) / s,
+        (r.top - oy) / s,
+        r.width / s,
+        r.height / s,
+        -blur * 2,
+        -blur * 2,
+        r.width + blur * 4,
+        r.height + blur * 4,
+      );
+      el.style.backgroundImage = `url("${canvas.toDataURL("image/jpeg", 0.92)}")`;
+      el.style.backgroundSize = "100% 100%";
+      el.style.backgroundRepeat = "no-repeat";
+    }
+  };
   const coverCrop = (url, w, h) => new Promise((res) => {
     const img = new Image();
     img.crossOrigin = "anonymous";
@@ -159,16 +212,36 @@ ${css}</style><body>${html}${run}`;
     img.src = url;
   });
 
+  const plateHtml = (node) => {
+    const clone = node.cloneNode(true);
+    clone.style.transform = "none";
+    clone.style.transformOrigin = "";
+    const page = P();
+    clone.style.width = `${page.w}px`;
+    clone.style.height = `${page.h}px`;
+    return clone.outerHTML;
+  };
+
   const save = async (node, css) => {
     const kind = state.kind || B().AS_DEFAULT;
     const name = `${state.row.vessel || "card"}-${state.row.voyage || "schedule"}`;
-    const html = node.outerHTML;
+    const html = plateHtml(node);
     const page = P();
 
     if (kind === "print") {
+      const frame = Object.assign(document.createElement("iframe"), {
+        style: `position:fixed;left:-9999px;top:0;width:${page.w}px;height:${page.h}px;border:0`,
+      });
+      document.body.append(frame);
+      frame.srcdoc = doc(name, html, css);
+      await new Promise((r) => (frame.onload = r));
+      await settle(frame.contentDocument);
+      await bakeEffects(frame.contentDocument);
+      const baked = frame.contentDocument.querySelector("[data-print]").outerHTML;
+      frame.remove();
       const w = window.open("", B().WINDOW);
       if (!w) return alert(B().POPUP);
-      w.document.write(doc(name, html, css, readyScript()));
+      w.document.write(doc(name, baked, css, readyScript()));
       return w.document.close();
     }
 
@@ -181,6 +254,7 @@ ${css}</style><body>${html}${run}`;
     await new Promise((r) => (frame.onload = r));
     const d = frame.contentDocument;
     await settle(d);
+    await bakeEffects(d);
 
     const el = d.querySelector("[data-print]");
     const plate = d.querySelector("[data-plate]");

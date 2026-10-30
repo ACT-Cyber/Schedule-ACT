@@ -61,6 +61,12 @@
 .cp-import .route {
   display: grid;
   margin: var(--cp-gap) 0;
+  padding: 18px 22px;
+  border: 3px solid var(--cp-yellow);
+  border-radius: 28px;
+  background: rgba(255, 255, 255, 0.18);
+  -webkit-backdrop-filter: blur(14px);
+  backdrop-filter: blur(14px);
 }
 .cp-import .place {
   font-size: var(--cp-place-size);
