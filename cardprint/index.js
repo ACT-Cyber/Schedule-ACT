@@ -54,6 +54,21 @@
     Promise.all(fontSpecs().map((spec) => d.fonts.load(spec))).catch(() => {});
 
   const title = () => state.title.trim() || C().TITLE;
+  const dateParts = (dateStr) => {
+    const d = window.ACT && ACT.parseDate(dateStr);
+    if (!d) return {};
+    const m = d.getMonth() + 1;
+    const pad = (n) => String(n).padStart(2, "0");
+    return {
+      YYYY: String(d.getFullYear()),
+      YY: pad(d.getFullYear() % 100),
+      MMMM: CONFIG.MONTH_LABELS[m],
+      MMM: CONFIG.MONTH_SHORT[m],
+      MM: pad(m),
+      DD: pad(d.getDate()),
+      D: String(d.getDate()),
+    };
+  };
   const field = (row, key) => {
     const fmt = window.ACT && ACT.format;
     if (key === "etd" || key === "eta" || key === "cfs") {
@@ -71,6 +86,13 @@
   const fill = (root, row, design) => {
     root.querySelectorAll("[data-field]").forEach((node) => {
       node.textContent = field(row, node.dataset.field);
+    });
+    root.querySelectorAll("[data-date]").forEach((node) => {
+      const key = node.dataset.date;
+      const src = key === "cfs" ? row.cfsCutOff : row[key];
+      const part = node.dataset.part;
+      const map = dateParts(src);
+      node.textContent = (part && map[part]) || field(row, key);
     });
     root.querySelectorAll("img[src]").forEach((img) => {
       img.src = new URL(img.getAttribute("src"), location.href).href;
@@ -216,15 +238,31 @@ ${css}</style><body>${html}${run}`;
     document.body.append(dialog);
     const stage = dialog.querySelector("[data-stage]");
     let css = "";
+    const fit = () => {
+      const plate = stage.querySelector("[data-print]");
+      if (!plate) return;
+      plate.style.transform = "none";
+      const head = dialog.querySelector("form > header");
+      const foot = dialog.querySelector("form > footer");
+      const pad = C().FIT_PAD || 16;
+      const availW = dialog.clientWidth - pad * 2;
+      const availH = dialog.clientHeight - head.offsetHeight - foot.offsetHeight - pad * 3;
+      const scale = Math.min(1, availW / plate.offsetWidth, availH / plate.offsetHeight);
+      plate.style.transformOrigin = "top center";
+      plate.style.transform = `scale(${scale})`;
+      stage.style.height = `${plate.offsetHeight * scale}px`;
+    };
     const paint = async () => {
       dialog.querySelector("[data-label]").textContent = cfg.DESIGNS[state.index].label;
       const loaded = await loadDesign();
       css = loaded.css;
       stage.innerHTML = `<style>${loaded.css}</style>${loaded.html}`;
       fill(stage, state.row, loaded.design);
-      stage.style.zoom = Math.min(1, (dialog.clientWidth - 24) / P().w);
+      fit();
       loadFonts();
     };
+    const onResize = () => fit();
+    addEventListener("resize", onResize);
     dialog.addEventListener("click", async (event) => {
       const act = event.target.closest("[data-act]")?.dataset.act;
       if (act === "prev" || act === "next") {
@@ -260,6 +298,7 @@ ${css}</style><body>${html}${run}`;
       input.addEventListener("change", () => { state.kind = input.value; });
     });
     dialog.addEventListener("close", () => {
+      removeEventListener("resize", onResize);
       if (state.bg) URL.revokeObjectURL(state.bg);
       state.bg = "";
       dialog.remove();
@@ -282,7 +321,7 @@ ${css}</style><body>${html}${run}`;
 
   // Font faces are registered once for the page, so the preview always uses the folder fonts.
   const style = document.createElement("style");
-  style.textContent = `${fontCss()}.cardprint{border:0;border-radius:16px;padding:12px;width:min(100vw - 16px,720px);max-height:100vh;overflow:auto}.cardprint::backdrop{background:rgba(15,23,42,.45)}.cardprint form{display:grid;gap:10px}.cardprint form>header,.cardprint form>footer{display:flex;gap:8px;align-items:center;flex-wrap:wrap}.cardprint form>header{justify-content:space-between}.cardprint .stage{display:grid;justify-content:center;overflow:auto}.cardprint [data-title]{flex:1 1 180px;min-height:40px;border:1px solid #d7e0da;border-radius:12px;padding:0 12px}.cardprint .as{display:flex;gap:10px;flex-wrap:wrap}.cardprint button,.cardprint label{font:inherit}@media (min-width:720px){.cardprint form>footer{justify-content:space-between}}`;
+  style.textContent = `${fontCss()}.cardprint{border:0;border-radius:16px;padding:12px;width:min(100vw - 16px,720px);max-height:calc(100vh - 16px);overflow:hidden}.cardprint::backdrop{background:rgba(15,23,42,.45)}.cardprint form{display:grid;grid-template-rows:auto 1fr auto;gap:10px;max-height:calc(100vh - 40px)}.cardprint form>header,.cardprint form>footer{display:flex;gap:8px;align-items:center;flex-wrap:wrap}.cardprint form>header{justify-content:space-between}.cardprint .stage{display:grid;justify-content:center;overflow:hidden}.cardprint [data-title]{flex:1 1 180px;min-height:40px;border:1px solid #d7e0da;border-radius:12px;padding:0 12px}.cardprint .as{display:flex;gap:10px;flex-wrap:wrap}.cardprint button,.cardprint label{font:inherit}@media (min-width:720px){.cardprint form>footer{justify-content:space-between}}`;
   document.head.append(style);
   document.readyState === "loading" ? addEventListener("DOMContentLoaded", bind) : bind();
 })();
