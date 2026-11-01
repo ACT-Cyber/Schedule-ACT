@@ -86,6 +86,10 @@ const CONFIG = {
     VGM_BEFORE: "VGM cut-off",
     VGM_HOURS: "hours before",
     CFS_AFTER: "CFS cut-off",
+    VESSEL: "Vessel",
+    VOYAGE: "Voyage",
+    PORT: "Port",
+    TO: "To",
   },
 
   SEARCH_FIELDS: ["origin", "vessel", "voyage", "destination"],
@@ -254,23 +258,33 @@ const CONFIG = {
   CARDPRINT: {
     ADDRESS: ["Jl. Perak Timur No. 248", "Tanjung Perak, Surabaya 60165"],
     SITE: "https://actglobal-freight.com",
-    TITLE: "IMPORT",
+    TITLE: "LCL IMPORT",
     BG: "bg.webp",
-    PAGE: { w: 794, h: 1123 },
     FIT_PAD: 16,
     DATE_PARTS: ["YYYY", "YY", "MMMM", "MMM", "MM", "DD", "D"],
-    FONT: {
-      DIR: "font",
-      FAMILY: "Inter",
-      FORMAT: "woff2",
-      FILES: [
-        { weight: 400, file: "Inter-Regular.woff2" },
-        { weight: 500, file: "Inter-Medium.woff2" },
-        { weight: 600, file: "Inter-SemiBold.woff2" },
-        { weight: 700, file: "Inter-Bold.woff2" },
-        { weight: 800, file: "Inter-ExtraBold.woff2" },
-      ],
-    },
+    FONTS: [
+      {
+        DIR: "font",
+        FAMILY: "Inter",
+        FORMAT: "woff2",
+        FILES: [
+          { weight: 400, file: "Inter-Regular.woff2" },
+          { weight: 500, file: "Inter-Medium.woff2" },
+          { weight: 600, file: "Inter-SemiBold.woff2" },
+          { weight: 700, file: "Inter-Bold.woff2" },
+          { weight: 800, file: "Inter-ExtraBold.woff2" },
+        ],
+      },
+      {
+        DIR: "font",
+        FAMILY: "JetBrains Mono",
+        FORMAT: "woff2",
+        FILES: [
+          { weight: 500, file: "JetBrainsMono-Medium.woff2" },
+          { weight: 700, file: "JetBrainsMono-Bold.woff2" },
+        ],
+      },
+    ],
     PREV: "Previous design",
     NEXT: "Next design",
     DICE: "Random design",
@@ -278,7 +292,24 @@ const CONFIG = {
     RESET_BG: "Reset background",
     OPEN: "Print card",
     CLOSE: "Close",
+    // bg: "" means no default image (the design paints its own gradient). Omit bg to use BG above.
     DESIGNS: [
+      {
+        id: "import-light",
+        label: "Import glass",
+        html: "cardprint/import-light/design.html",
+        css: "cardprint/import-light/design.css",
+        bg: "",
+      },
+      {
+        // Same files as import-light; `theme` selects the token set in design.css.
+        id: "import-dark",
+        label: "Import glass dark",
+        html: "cardprint/import-dark/design.html",
+        css: "cardprint/import-dark/design.css",
+        bg: "",
+        theme: "dark",
+      },
       {
         id: "import-a",
         label: "Import",

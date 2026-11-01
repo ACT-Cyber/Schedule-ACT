@@ -1,0 +1,53 @@
+<article class="cp-glass" data-print>
+  <div class="plate" data-plate>
+    <section class="cg-card">
+      <header class="cg-top">
+        <strong class="cg-brand" data-field="title"></strong>
+        <img class="cg-logo" src="img/ACT.webp" alt="">
+      </header>
+
+      <div class="cg-ident">
+        <div class="cg-from">
+          <h2 data-field="origin"></h2>
+          <p class="cg-stem">
+            <svg class="cg-pin" viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M12 2a7 7 0 0 0-7 7c0 5.25 7 13 7 13s7-7.75 7-13a7 7 0 0 0-7-7zm0 9.5a2.5 2.5 0 1 1 0-5 2.5 2.5 0 0 1 0 5z"/></svg>
+            <span data-field="destination"></span>
+          </p>
+        </div>
+        <div class="cg-kv">
+          <span class="cg-k" data-label="VESSEL"></span>
+          <span class="cg-v" data-field="vessel"></span>
+        </div>
+        <div class="cg-kv">
+          <span class="cg-k" data-label="VOYAGE"></span>
+          <span class="cg-v" data-field="voyage"></span>
+        </div>
+      </div>
+
+      <div class="cg-line">
+        <span class="cg-k" data-label="DEPART"></span>
+        <span class="cg-k" data-label="ETA"></span>
+        <span class="cg-k cg-right" data-label="ARRIVAL"></span>
+        <span class="cg-date cg-depart" data-field="etd"></span>
+        <span class="cg-track">
+          <i class="cg-dot"></i>
+          <span class="cg-dur" data-field="duration" data-hide-empty></span>
+          <i class="cg-head"></i>
+        </span>
+        <span class="cg-date cg-arrive cg-right" data-field="eta"></span>
+      </div>
+
+      <p class="cg-foot">
+        <span data-label="VGM_BEFORE"></span>
+        <b data-field="vgmHours"></b>
+        <span data-label="VGM_HOURS"></span>
+        <b data-field="cfs"></b>
+        <span data-label="CFS_AFTER"></span>
+      </p>
+
+      <p class="cg-port" data-hide-empty>
+        <b data-label="PORT"></b> - <span data-field="port"></span>
+      </p>
+    </section>
+  </div>
+</article>
